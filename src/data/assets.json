@@ -1,0 +1,50 @@
+{
+  "type": "geojson",
+  "data": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.5357638238424, 40.365120132249785]
+        },
+        "properties": {}
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.215061, 40.648229]
+        },
+        "properties": {
+          "name": "asset-1",
+          "description": "Asset 1"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.56964452990182, 40.36100187129733]
+        },
+        "properties": {
+          "name": "asset-2",
+          "description": "Asset 2",
+          "geofenceStatus": "INSIDE"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-121.354465, 40.360737]
+        },
+        "properties": {
+          "name": "asset-3",
+          "description": "Asset 3"
+        }
+      }
+    ]
+  }
+}

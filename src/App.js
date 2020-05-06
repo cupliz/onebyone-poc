@@ -1,110 +1,61 @@
-// import axios from 'axios'
+import axios from 'axios'
 import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl'
 import './App.css'
+import { createGeofence, getRoute } from './helpers'
+import Assets from './data/assets.json'
 
 const mapboxToken = process.env.REACT_APP_MAPBOX_TOKEN
 mapboxgl.accessToken = mapboxToken
 
-const assetsData = {
-  'type': 'FeatureCollection',
-  'features': [
-    {
-      'type': 'Feature',
-      'geometry': {
-        'type': 'Point',
-        'coordinates': [-121.215061, 40.648229],
-      },
-      'properties': {
-        'description': "Asset 1",
-      },
-    },
-    {
-      'type': 'Feature',
-      'geometry': {
-        'type': 'Point',
-        'coordinates': [-121.505684, 40.468084]
-      },
-      'properties': {
-        'description': "Asset 2",
-        "geofenceStatus": "INSIDE"
-      },
-    },
-    {
-      'type': 'Feature',
-      'geometry': {
-        'type': 'Point',
-        'coordinates': [-121.354465, 40.360737]
-      },
-      'properties': {
-        'description': "Asset 3",
-      },
-    }
-  ]
-}
-const createGeoJSONCircle = function (center, radiusInKm, points) {
-  if (!points) points = 64;
-  var coords = {
-    latitude: center[1],
-    longitude: center[0]
-  };
-  var km = radiusInKm;
-  var ret = [];
-  var distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
-  var distanceY = km / 110.574;
-  var theta, x, y;
-  for (var i = 0; i < points; i++) {
-    theta = (i / points) * (2 * Math.PI);
-    x = distanceX * Math.cos(theta);
-    y = distanceY * Math.sin(theta);
-
-    ret.push([coords.longitude + x, coords.latitude + y]);
-  }
-  ret.push(ret[0]);
-
-  return {
-    "type": "geojson",
-    "data": {
-      "type": "FeatureCollection",
-      "features": [{
-        "type": "Feature",
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [ret]
-        }
-      }]
-    }
-  };
-}
-
 function App() {
+  let mapContainer = useRef(null);
   const [config, setConfig] = useState({
     zoom: 10.5,
+    minZoom: 4,
     center: [-121.359684, 40.483084],
-    dst: [-121.499684, 40.473084],
   })
-  let mapContainer = useRef(null);
+
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: config.center,
-      zoom: config.zoom
+      zoom: config.zoom,
+      minZoom: config.minZoom
     })
-    map.on("style.load", () => {
-      onLoad(map)
-    });
+    map.on("style.load", async () => {
+      await onLoad(map)
+    })
   }, [])
+  const dst = Assets.data.features[0].geometry.coordinates
   const onLoad = async (map) => {
-    map.addSource("geofences", createGeoJSONCircle(config.dst, 1));
-    map.addSource('assets', {
-      'type': 'geojson',
-      'data': assetsData
+
+    Assets.data.features.map(async el => {
+      if (el.properties.description) {
+        const coords = el.geometry.coordinates
+        const data = await getRoute(map, mapboxToken, el.properties.name, `${dst[0]},${dst[1]};${coords[0]},${coords[1]}`);
+        console.log(data)
+        new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+        })
+          .setLngLat(el.geometry.coordinates)
+          .setHTML(`
+            <p>
+            <b>${el.properties.description}</b> <br/>
+            Distance: ${data.distance} <br/>
+            ETA: ${data.duration}
+            </p>
+          `)
+          .addTo(map);
+      }
     })
+
     map.addLayer({
-      'id': 'geofences',
+      'id': 'dstGeofence',
       'type': 'fill',
-      'source': 'geofences',
+      'source': createGeofence(dst, 3),
       'paint': {
         'fill-color': '#888888',
         'fill-opacity': 0.4
@@ -115,52 +66,22 @@ function App() {
     map.addLayer({
       'id': 'assets',
       'type': 'circle',
-      'source': 'assets',
+      'source': Assets,
       'paint': {
-        "circle-radius": [
-          "interpolate",
-          ["exponential", 1.2],
-          ["zoom"],
-          0,
-          5,
-          16,
-          10
-        ],
-        "circle-color": [
-          "case",
-          ["==", ["get", "geofenceStatus"], "INSIDE"],
-          "red",
-          "blue"
-        ],
+        "circle-radius": 6,
+        "circle-color": ["case", ["==", ["get", "geofenceStatus"], "INSIDE"], "red", "blue"],
       },
       'filter': ['==', '$type', 'Point']
     });
-    assetsData.features.map(el => {
-      new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false
-      })
-        .setLngLat(el.geometry.coordinates)
-        .setHTML(el.properties.description)
-        .addTo(map);
-    })
-    // map.on('mouseenter', 'assets', function (e) {
-    //   map.getCanvas().style.cursor = 'pointer';
-    //   var coordinates = e.features[0].geometry.coordinates.slice();
-    //   var description = e.features[0].properties.description;
-    //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-    //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    //   }
-    //   popup
-    //     .setLngLat(coordinates)
-    //     .setHTML(description)
-    //     .addTo(map);
-    // });
 
-    // map.on('mouseleave', 'assets', function () {
-    //   map.getCanvas().style.cursor = '';
-    //   popup.remove();
-    // });
+    map.on('click', function (e) {
+      var coordsObj = e.lngLat;
+      var coords = Object.keys(coordsObj).map(function (key) {
+        return coordsObj[key];
+      });
+      console.log(coords)
+    });
+
   }
   return (
     <div>

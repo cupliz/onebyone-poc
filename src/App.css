@@ -5,3 +5,9 @@
   left: 0;
   bottom: 0;
 }
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
+  display: none;
+}
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib .mapbox-improve-map{
+  display: block;
+}
