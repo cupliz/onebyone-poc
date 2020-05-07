@@ -41,6 +41,7 @@ export default () => {
     center: [-121.359684, 40.483084],
   })
   const [page, setPage] = useState('detail')
+  const [detail, setDetail] = useState({})
 
   const dst = Assets.data.features[0].geometry.coordinates
   useEffect(() => {
@@ -49,7 +50,7 @@ export default () => {
       const map = new mapboxgl.Map({
         container: mapContainer,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [dst[0] - 0.2, dst[1]],
+        center: [dst[0] - 0.1, dst[1]],
         zoom: config.zoom,
         minZoom: config.minZoom
       })
@@ -63,13 +64,19 @@ export default () => {
       if (el.properties.name) {
         const coords = el.geometry.coordinates
         const data = await getRoute(map, mapboxToken, el.properties.name, `${dst[0]},${dst[1]};${coords[0]},${coords[1]}`);
-        console.log(data)
+        // console.log(data)
 
-        var marker = document.createElement('div');
+        const marker = document.createElement('div');
         marker.className = 'marker';
         if (el.properties.geofenceStatus == 'INSIDE') {
           marker.className = 'marker inside';
         }
+
+        marker.addEventListener('click', () => {
+          const newCenter = el.geometry.coordinates
+          map.flyTo({ center: [newCenter[0] - 0.1, newCenter[1]] })
+          setDetail(Object.assign({}, data, el.properties))
+        });
         new mapboxgl.Marker(marker)
           .setLngLat(el.geometry.coordinates)
           .addTo(map);
@@ -92,18 +99,18 @@ export default () => {
       'type': 'circle',
       'source': Assets,
       'paint': {
-        "circle-color": ["case", ["==", ["get", "geofenceStatus"], "INSIDE"], "#e53935", "#2da7e0"],
+        "circle-color": ["case", ["==", ["get", "status"], "ARRIVED"], "#e53935", "#2da7e0"],
       },
       'filter': ['==', '$type', 'Point']
     });
 
-    map.on('click', function (e) {
-      var coordsObj = e.lngLat;
-      var coords = Object.keys(coordsObj).map(function (key) {
-        return coordsObj[key];
-      });
-      console.log(coords)
-    });
+    // map.on('click', function (e) {
+    //   var coordsObj = e.lngLat;
+    //   var coords = Object.keys(coordsObj).map(function (key) {
+    //     return coordsObj[key];
+    //   });
+    //   console.log(coords)
+    // });
 
   }
   const styleFlag = (text) => {
@@ -139,37 +146,47 @@ export default () => {
         <div className="content">
 
           <div className="card opaque-8">
-            <div className="card-body"> <h5><b className=" text-muted">Active / FoxxFleet:</b> Truck002 </h5></div>
+            <div className="card-body"> <h5><b className="text-muted">Active / FoxxFleet:</b>
+              <span className="float-right">{detail.name}</span>
+            </h5></div>
           </div>
 
           <div className="card">
             <div className="card-header">
-              <h5 className="text-muted"><IoMdCar className="mb-1" /> Mike Dicsone <button className="btn btn-sm btn-black float-right">AVE 44km</button></h5>
+              <h5 className="text-muted"><IoMdCar className="mb-1" /> {detail.driver}
+                <button className="btn btn-sm btn-black float-right">AVE 44km</button>
+              </h5>
             </div>
             <div className="card-body">
               <div className="row">
-                <span className="col text-muted"> STATUS: </span>
-                <span className="col text-success"> Moving* </span>
-                <span className="col text-muted"> PICKUP: </span>
-                <span className="col"> Mascot 01 </span>
+                <div className="col-3 text-muted">STATUS:</div>
+                <div className="col-3 p-0">
+                  {detail.name ? detail.status === 'ARRIVED'
+                    ? <span className="text-warning">{detail.status}</span>
+                    : <span className="text-success">MOVING*</span>
+                    : null
+                  }
+                </div>
+                <div className="col-2 p-0 text-muted">PICKUP:</div>
+                <div className="col-4 p-0">{detail.origin}</div>
               </div>
               <div className="row">
-                <span className="col text-muted"> CUSTOMER: </span>
-                <span className="col"> Foxx </span>
-                <span className="col text-muted"> DROP OFF: </span>
-                <span className="col"> CLS, Pyrmont </span>
+                <div className="col-3 text-muted"> CUSTOMER: </div>
+                <div className="col-3 p-0">{detail.customer}</div>
+                <div className="col-2 p-0 text-muted"> DROP OFF: </div>
+                <div className="col-4 p-0">{detail.destination}</div>
               </div>
               <div className="row">
-                <span className="col text-muted"> TRIP NO: </span>
-                <span className="col"> 0011 765 </span>
-                <span className="col text-muted"> TRIP TIME: </span>
-                <span className="col"> 8 minutes </span>
+                <div className="col-3 text-muted"> TRIP NO: </div>
+                <div className="col-3 p-0">{detail.id}</div>
+                <div className="col-2 p-0 text-muted"> TRIP TIME: </div>
+                <div className="col-4 p-0">{detail.duration} </div>
               </div>
               <div className="row">
-                <span className="col text-muted"> ORDERS: </span>
-                <span className="col"> 3 </span>
-                <span className="col text-muted"> DROP TIME: </span>
-                <span className="col"> 18 minutes </span>
+                <div className="col-3 text-muted"> ORDERS: </div>
+                <div className="col-3 p-0"> 3 </div>
+                <div className="col-2 p-0 text-muted"> DROP TIME: </div>
+                <div className="col-4 p-0"> </div>
               </div>
             </div>
             <div className="card-footer text-right">

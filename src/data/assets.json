@@ -18,8 +18,10 @@
           "coordinates": [153.29033625402678, -27.918680577002903]
         },
         "properties": {
-          "name": "asset-1",
-          "description": "Asset 1"
+          "id": "0010.965",
+          "name": "Asset 1",
+          "driver": "Mark Marquez",
+          "customer": "Foxx"
         }
       },
       {
@@ -29,9 +31,11 @@
           "coordinates": [153.38790960739146, -28.008661357911414]
         },
         "properties": {
-          "name": "asset-2",
-          "description": "Asset 2",
-          "geofenceStatus": "INSIDE"
+          "status": "ARRIVED",
+          "id": "0011.231",
+          "name": "Asset 2",
+          "driver": "Velentino Rossi",
+          "customer": "Fedx"
         }
       },
       {
@@ -41,8 +45,10 @@
           "coordinates": [153.26707042255055, -28.15118480367513]
         },
         "properties": {
-          "name": "asset-3",
-          "description": "Asset 3"
+          "id": "0012.442",
+          "name": "Asset 3",
+          "driver": "Nicky Hayden",
+          "customer": "JNE"
         }
       }
     ]
