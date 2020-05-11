@@ -74,7 +74,10 @@ export default () => {
 
         marker.addEventListener('click', () => {
           const newCenter = el.geometry.coordinates
-          map.flyTo({ center: [newCenter[0] - 0.1, newCenter[1]] })
+          const zoom = map.getZoom()
+          const calZoom = zoom / 200
+          console.log(zoom, calZoom)
+          map.flyTo({ center: [newCenter[0] - calZoom, newCenter[1]] })
           setDetail(Object.assign({}, data, el.properties))
         });
         new mapboxgl.Marker(marker)
