@@ -30,7 +30,7 @@ a.mapboxgl-ctrl-logo {
 
 .content {
   position: fixed;
-  margin-left: 10%;
+  left: 100px;
   color: #000;
   overflow: auto;
 }
