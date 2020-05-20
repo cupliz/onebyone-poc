@@ -1,18 +1,13 @@
-import axios from 'axios'
 import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl'
-import './App.css'
-import { createGeofence, getRoute } from './helpers'
-import Assets from './data/assets.json'
-import {
-  IoMdSearch, IoMdCar, IoIosArrowDropright,
-  IoIosRadioButtonOn, IoIosSettings, IoMdClipboard,
-  IoMdLocate
-} from "react-icons/io";
-import { BsSearch, BsTerminal, BsBell, BsGearFill, BsChevronRight } from "react-icons/bs";
+import { IoMdCar, IoIosArrowDropright, IoIosRadioButtonOn, IoMdLocate } from "react-icons/io";
+import { BsSearch, BsTerminal, BsBell, BsGearFill } from "react-icons/bs";
 import { FaDotCircle } from "react-icons/fa";
 import { FiChevronRight } from "react-icons/fi";
 import { AiOutlineCalendar, AiOutlineBell, AiOutlineRightCircle, AiOutlineRight } from "react-icons/ai";
+import './App.css'
+import { createGeofence, getRoute } from './helpers'
+import Assets from './data/assets.json'
 
 const mapboxToken = process.env.REACT_APP_MAPBOX_TOKEN
 mapboxgl.accessToken = mapboxToken
@@ -76,7 +71,7 @@ export default () => {
           const newCenter = el.geometry.coordinates
           const zoom = map.getZoom()
           const calZoom = zoom / 200
-          console.log(zoom, calZoom)
+          console.log(el)
           map.flyTo({ center: [newCenter[0] - calZoom, newCenter[1]] })
           setDetail(Object.assign({}, data, el.properties))
         });
@@ -137,7 +132,7 @@ export default () => {
       <div ref={el => mapContainer = el} className="mapContainer" />
 
       <div className="sidebar">
-        <a href="#1"><BsSearch /></a>
+        <a href="#1" className="logo">&nbsp;</a>
         <a href="#2"><IoMdCar /></a>
         <a href="#3" className={page === 'detail' ? 'active' : null} onClick={() => togglePage('detail')}><AiOutlineRightCircle /></a>
         <a href="#4"><IoIosRadioButtonOn /></a>

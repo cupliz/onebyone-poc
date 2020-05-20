@@ -61,8 +61,8 @@ export const getRoute = async (map, token, id, coords) => {
   }
   const distance = parseFloat(data.routes[0].distance) / 1000
   const duration = formatDuration(data.routes[0].duration)
-  const origin = data.waypoints[0].name
-  const destination = data.waypoints[1].name
+  const destination = data.waypoints[0].name
+  const origin = data.waypoints[1].name
   return { distance: distance.toFixed(2), duration, origin, destination }
 }
 const formatDuration = (duration) => {

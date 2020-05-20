@@ -4,7 +4,12 @@ body {
 h5 {
   margin-bottom: 0;
 }
-
+.logo {
+  background-image: url('/logo.png');
+  background-size: 80px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .mapContainer {
   position: absolute;
   top: 0;
@@ -24,12 +29,13 @@ a.mapboxgl-ctrl-logo {
 }
 
 .content {
-  position: absolute;
-  left: 80px;
+  position: fixed;
+  margin-left: 10%;
   color: #000;
   overflow: auto;
 }
 .sidebar {
+  width: 100px;
   position: fixed;
   margin: 0;
   padding: 0;
@@ -41,15 +47,13 @@ a.mapboxgl-ctrl-logo {
 .sidebar a {
   display: block;
   color: #fff;
-  padding: 10px 30px;
+  padding: 10px 40px;
   margin: 20px 0;
   text-decoration: none;
 }
 .sidebar a.active {
   border-left: 2px solid #2da7e0;
   color: #2da7e0;
-  font-size: 110%;
-  padding-left: 26px;
 }
 .sidebar a.active:after {
   content: '';
