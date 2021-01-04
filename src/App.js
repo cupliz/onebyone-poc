@@ -32,8 +32,7 @@ export default () => {
   let mapContainer = useRef(null);
   const [config, setConfig] = useState({
     zoom: 10.5,
-    minZoom: 4,
-    center: [-121.359684, 40.483084],
+    minZoom: 4
   })
   const [page, setPage] = useState('detail')
   const [detail, setDetail] = useState({})

@@ -7,7 +7,7 @@
         "type": "Feature",
         "geometry": {
           "type": "Point",
-          "coordinates": [153.4103132, -27.99811]
+          "coordinates": [103.84663164875619, 1.2862051484489958]
         },
         "properties": {}
       },
@@ -15,40 +15,40 @@
         "type": "Feature",
         "geometry": {
           "type": "Point",
-          "coordinates": [153.29033625402678, -27.918680577002903]
-        },
-        "properties": {
-          "id": "0010.965",
-          "name": "Asset 1",
-          "driver": "Mark Marquez",
-          "customer": "Foxx"
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [153.38790960739146, -28.008661357911414]
-        },
-        "properties": {
-          "status": "ARRIVED",
-          "id": "0011.231",
-          "name": "Asset 2",
-          "driver": "Velentino Rossi",
-          "customer": "Fedx"
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [153.26707042255055, -28.15118480367513]
+          "coordinates": [103.7331596, 1.4604268]
         },
         "properties": {
           "id": "0012.442",
-          "name": "Asset 3",
-          "driver": "Nicky Hayden",
-          "customer": "JNE"
+          "name": "Asset 12",
+          "driver": "Lee Chin",
+          "customer": "FF One Logistic"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [103.8603416223241, 1.2954350106960637]
+        },
+        "properties": {
+          "id": "0013.522",
+          "name": "Asset 13",
+          "driver": "Richard Pollen",
+          "customer": "N-BOX SHIPPING",
+          "status": "ARRIVED"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [103.72732521488135, 1.3157111363589737]
+        },
+        "properties": {
+          "id": "0014.612",
+          "name": "Asset 14",
+          "driver": "Chang Yee",
+          "customer": "Yusen Logistics"
         }
       }
     ]
