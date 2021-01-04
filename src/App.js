@@ -75,7 +75,7 @@ export default () => {
           setDetail(Object.assign({}, data, el.properties))
         });
         new mapboxgl.Marker(marker)
-          .setLngLat(el.geometry.coordinates)
+          .setLngLat(el.properties.coordinates)
           .addTo(map);
       }
     })
@@ -83,7 +83,7 @@ export default () => {
     map.addLayer({
       'id': 'dstGeofence',
       'type': 'fill',
-      'source': createGeofence(dst, 3),
+      'source': createGeofence(dst, 1),
       'paint': {
         'fill-color': '#888888',
         'fill-opacity': 0.4

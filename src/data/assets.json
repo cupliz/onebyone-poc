@@ -15,27 +15,29 @@
         "type": "Feature",
         "geometry": {
           "type": "Point",
-          "coordinates": [103.7331596, 1.4604268]
+          "coordinates": [103.76783577783486, 1.464545633723821]
         },
         "properties": {
           "id": "0012.442",
           "name": "Asset 12",
           "driver": "Lee Chin",
-          "customer": "FF One Logistic"
+          "customer": "FF One Logistic",
+          "coordinates": [103.78019539627009, 1.4266205443726903]
         }
       },
       {
         "type": "Feature",
         "geometry": {
           "type": "Point",
-          "coordinates": [103.8603416223241, 1.2954350106960637]
+          "coordinates": [103.9697095322683, 1.3560880383734752]
         },
         "properties": {
           "id": "0013.522",
           "name": "Asset 13",
           "driver": "Richard Pollen",
-          "customer": "N-BOX SHIPPING",
-          "status": "ARRIVED"
+          "customer": "Agility Global",
+          "status": "ARRIVED",
+          "coordinates": [103.85360642341348, 1.2809615233567286]
         }
       },
       {
@@ -48,7 +50,8 @@
           "id": "0014.612",
           "name": "Asset 14",
           "driver": "Chang Yee",
-          "customer": "Yusen Logistics"
+          "customer": "Yusen Logistics",
+          "coordinates": [103.77650559405969, 1.3015080335913816]
         }
       }
     ]
